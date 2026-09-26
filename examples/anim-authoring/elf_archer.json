@@ -1,0 +1,52 @@
+{
+ "unit": "elf_archer",
+ "rigFix": {
+  "input": "input/elf_archer/rigged.glb",
+  "weapons": [
+   {
+    "hand": "LeftHand",
+    "forearm": "LeftForeArm",
+    "fistRadius": 0.055
+   }
+  ],
+  "skirts": [
+   {
+    "note": "green cloak below the waist, outside/behind the legs",
+    "box": [
+     [
+      -0.45,
+      -0.25,
+      0.25
+     ],
+     [
+      0.45,
+      0.35,
+      0.97
+     ]
+    ],
+    "exclude": [
+     {
+      "box": [
+       [
+        -0.2,
+        -0.3,
+        0.0
+       ],
+       [
+        0.2,
+        0.07,
+        0.97
+       ]
+      ]
+     }
+    ],
+    "waistZ": 0.95,
+    "hemZ": 0.3,
+    "hipsAtWaist": 0.8,
+    "hipsAtHem": 0.35,
+    "ownSide": 0.7
+   }
+  ]
+ },
+ "rig": "output/anim-authoring/elf_archer/rig-v1/character.glb"
+}

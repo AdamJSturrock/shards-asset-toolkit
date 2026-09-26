@@ -1,0 +1,132 @@
+{
+ "unit": "human_sword_shield",
+ "rigFix": {
+  "input": "input/human_sword_shield/rigged.glb",
+  "weapons": [
+   {
+    "hand": "RightHand",
+    "forearm": "RightForeArm",
+    "fistRadius": 0.055
+   }
+  ],
+  "shield": {
+   "glb": "input/human_sword_shield/shield.glb",
+   "bone": "LeftForeArm",
+   "size": 0.55,
+   "sizeRef": "headTop",
+   "faceLocal": [
+    0.1,
+    0,
+    -1
+   ],
+   "downLocal": [
+    1,
+    0,
+    0
+   ],
+   "along": 0.5,
+   "gap": 0.004,
+   "textureSize": 1024,
+   "back": {
+    "style": "planks",
+    "colour": [
+     0.26,
+     0.17,
+     0.1
+    ],
+    "rim": [
+     0.45,
+     0.46,
+     0.48
+    ],
+    "strap": [
+     0.33,
+     0.19,
+     0.09
+    ]
+   }
+  }
+ },
+ "rig": "output/anim-authoring/human_sword_shield/rig-v1/rig.glb",
+ "candidates": "output/anim-authoring/human_sword_shield/cand-v1/candidates.glb",
+ "candidatesSources": "retarget --leg-align 0.4 from mocap/remaster (S&S set) + crew downward slash; see cand-v1/candidates.json",
+ "boneKeep": {
+  "neck": 0.6,
+  "Head": 0.6
+ },
+ "clampIgnoreBones": [
+  "RightHand"
+ ],
+ "clips": {
+  "idle": {
+   "source": "idle_ss",
+   "loop": true,
+   "yawKeep": 0.0,
+   "yawRef": "rest",
+   "note": "Mixamo sword-and-shield idle, turned to face forward",
+   "groundClamp": true
+  },
+  "idle_2": {
+   "source": "idle_look",
+   "loop": true,
+   "yawKeep": 0.5,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "walk": {
+   "source": "walk_ss",
+   "loop": true,
+   "yawKeep": 0.5,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "attack": {
+   "source": "slash_down",
+   "range": [
+    3,
+    40
+   ],
+   "speed": 1.25,
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "hit": 17
+   },
+   "note": "one downward slash, 37 frames sped 1.25 -> 0.99 s; hit at 0.47 s"
+  },
+  "attack_2": {
+   "source": "slash_cross",
+   "range": [
+    4,
+    44
+   ],
+   "speed": 1.35,
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "hit": 24
+   },
+   "note": "cross slash, 40 frames sped 1.35 -> 0.99 s"
+  },
+  "special_1": {
+   "source": "idle_to_block",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "note": "hold_the_line: raise the shield to block (idle-to-block at 0.7x)",
+   "speed": 0.7
+  },
+  "death": {
+   "source": "death_back",
+   "yawKeep": 0.4,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "death_2": {
+   "source": "death_fwd",
+   "yawKeep": 0.4,
+   "yawRef": "rest",
+   "groundClamp": true
+  }
+ }
+}

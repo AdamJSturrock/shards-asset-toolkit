@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Adam Sturrock and Shards of Stone Contributors
 /**
  * Concept generation module using Google Gemini Image API.
  * Enforces orthographic 3/4 camera angles, clean backgrounds, and effect stripping.
@@ -7,7 +9,32 @@ import { parseArgs } from 'node:util';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const GEMINI_IMAGE_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent';
+const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models';
+// Gemini 3 Pro Image: about $0.134 per image at 1K/2K (Google list price).
+const DEFAULT_MODEL = 'gemini-3-pro-image-preview';
+
+const TPOSE_DIRECTIVE = `
+POSE: a T-pose for rigging. Standing straight, legs slightly apart, both arms held straight out to the sides at shoulder height.
+Any weapon stays gripped in its hand (do not drop it, do not open the hands).`;
+
+const KEY_COLOUR_DIRECTIVE = `
+PLAYER-COLOUR ZONES: paint small team-colour details (banners, plumes, sashes, trims) flat pure magenta #FF00FF,
+and large team-colour cloth (a cloak, a tabard, a caparison) flat pure cyan #00FFFF. Use those two colours nowhere else.`;
+
+const HELP = `shards-asset concept: generate a clean 2D concept image with Gemini
+
+Usage:
+  shards-asset concept --prompt "..." --output concepts/unit.png [--model ${DEFAULT_MODEL}] [--tpose] [--key-colours]
+
+Options:
+  --prompt <text>     subject description (required)
+  --output <png>      default ./output/concept.png
+  --model <id>        Gemini image model, default ${DEFAULT_MODEL}
+  --tpose             ask for a T-pose with the weapon still in hand (for rigging humanoids;
+                      do NOT use Meshy's pose_mode t-pose for armed units, it drops the weapon)
+  --key-colours       paint team-colour zones magenta #FF00FF (accent) and cyan #00FFFF
+                      (large cloth) for "shards-asset dye-mask"
+  --no-strip-effects  keep particles/smoke in the prompt (not recommended for 3D)`;
 
 export const CONCEPT_SYSTEM_DIRECTIVE = `
 You are an expert game concept artist creating asset turnarounds for Shards of Stone, a fantasy RTS.
@@ -28,14 +55,20 @@ export async function runConcept(args) {
     options: {
       prompt: { type: 'string' },
       output: { type: 'string' },
-      candidates: { type: 'string', default: '1' },
+      model: { type: 'string', default: DEFAULT_MODEL },
+      tpose: { type: 'boolean', default: false },
+      'key-colours': { type: 'boolean', default: false },
+      // accepted for backwards compatibility; effects are stripped unless --keep-effects
       'strip-effects': { type: 'boolean', default: true },
+      'keep-effects': { type: 'boolean', default: false },
+      help: { type: 'boolean', short: 'h' },
     }
   });
 
-  if (!values.prompt) {
-    console.error('Error: --prompt is required');
-    process.exit(1);
+  if (values.help || !values.prompt) {
+    console.log(HELP);
+    if (!values.help) process.exit(1);
+    return;
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -51,13 +84,16 @@ export async function runConcept(args) {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  const enhancedPrompt = `${CONCEPT_SYSTEM_DIRECTIVE}\nSubject: ${values.prompt}`;
+  const directive = values['keep-effects']
+    ? CONCEPT_SYSTEM_DIRECTIVE.split('CRITICAL FOR 3D GENERATION:')[0]
+    : CONCEPT_SYSTEM_DIRECTIVE;
+  const enhancedPrompt = `${directive}${values.tpose ? TPOSE_DIRECTIVE : ''}${values['key-colours'] ? KEY_COLOUR_DIRECTIVE : ''}\nSubject: ${values.prompt}`;
 
-  console.log(`[Concept] Generating concept via Gemini API...`);
+  console.log(`[Concept] Generating concept via ${values.model}...`);
   console.log(`[Concept] Prompt: "${values.prompt}"`);
-  console.log(`[Concept] Effect stripping: ${values['strip-effects'] ? 'ENABLED' : 'DISABLED'}`);
+  console.log(`[Concept] Effect stripping: ${values['keep-effects'] ? 'DISABLED' : 'ENABLED'} | T-pose: ${values.tpose} | key colours: ${values['key-colours']}`);
 
-  const url = `${GEMINI_IMAGE_ENDPOINT}?key=${apiKey}`;
+  const url = `${GEMINI_API}/${encodeURIComponent(values.model)}:generateContent`;
 
   const payload = {
     contents: [
@@ -75,7 +111,8 @@ export async function runConcept(args) {
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      // the key goes in a header, never in the URL (URLs end up in logs)
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       body: JSON.stringify(payload)
     });
 

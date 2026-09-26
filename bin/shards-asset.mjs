@@ -1,46 +1,61 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Adam Sturrock and Shards of Stone Contributors
 
 /**
  * Shards of Stone 3D Asset Toolkit CLI
- * 
- * Orchestrates the complete generative 3D asset pipeline:
- * Concept (Gemini) -> Mesh (Meshy) -> Rigging (Blender) -> Optimize (glTF-Transform) -> VAT
+ *
+ * Concept (Gemini) -> Mesh (Meshy) -> Rig (Meshy auto-rig or Blender) ->
+ * Clips (Mixamo retarget + polish, or procedural critter gaits) ->
+ * Dye mask -> Optimize (glTF-Transform). VAT baking is experimental.
  */
 
-import { parseArgs } from 'node:util';
-import path from 'node:path';
 import fs from 'node:fs';
 import dotenv from 'dotenv';
+import { BLENDER_COMMANDS, runBlenderCommand } from '../src/blender.mjs';
 
-// Load .env from current directory or toolkit root
-dotenv.config();
+dotenv.config({ quiet: true });
+
+const blenderLines = Object.entries(BLENDER_COMMANDS)
+  .map(([name, c]) => `  ${name.padEnd(20)}${c.summary}`)
+  .join('\n');
 
 const USAGE = `
 Shards of Stone 3D Asset Toolkit (@shardsofstone/asset-toolkit)
 
 Usage:
   shards-asset <command> [options]
+  shards-asset <command> --help
 
-Commands:
-  concept           Generate a clean 2D concept image with stripped atmospheric effects
-  mesh              Convert 2D concept image to a 3D textured GLB via Meshy API
-  rig-critter       Procedurally rig and animate non-humanoid creatures in headless Blender
-  retarget-mixamo   Retarget Mixamo FBX motion clips to humanoid GLB models in Blender
-  optimize          Transcode textures to KTX2 and compress geometry with meshopt
-  bake-vat          Bake skeletal animation into Vertex Animation Textures (VAT)
-  estimate-cost     Calculate API credits and token costs for a proposed generation
-  pipeline          Execute the full end-to-end pipeline from a JSON configuration file
+Generate:
+  concept             Generate a clean 2D concept image (Gemini)
+  mesh                Convert a concept image into a textured GLB (Meshy image-to-3D, 30 credits)
+  meshy-rig           Meshy humanoid auto-rig of a mesh task (5 credits, no animations)
+
+Rig and animate (headless Blender):
+  rig-critter         Rig and animate multi-legged creatures from a profile (prep, fit, rig, review)
+  retarget-mixamo     Retarget Mixamo FBX clips onto a 24-joint humanoid
+${blenderLines}
+
+Finish:
+  dye-mask            Add, inspect or verify the player-colour dye mask (apply | bbox | verify)
+  optimize            Transcode textures to KTX2 and compress geometry with meshopt
+  bake-vat            Bake animation into Vertex Animation Textures (EXPERIMENTAL)
+
+Other:
+  estimate-cost       Meshy credits and Gemini image cost for a batch of units
+  pipeline            Run the stages for one unit from a JSON config
 
 Options:
-  --help, -h        Show this help message
-  --version, -v     Show version information
+  --help, -h          Show this help message
+  --version, -v       Show version information
 `;
 
 async function main() {
   const args = process.argv.slice(2);
   const command = args[0];
 
-  if (!command || command === '--help' || command === '-h') {
+  if (!command || command === '--help' || command === '-h' || command === 'help') {
     console.log(USAGE);
     process.exit(0);
   }
@@ -53,6 +68,11 @@ async function main() {
 
   const subArgs = args.slice(1);
 
+  if (BLENDER_COMMANDS[command]) {
+    runBlenderCommand(command, subArgs);
+    return;
+  }
+
   switch (command) {
     case 'concept': {
       const { runConcept } = await import('../src/concept.mjs');
@@ -64,6 +84,11 @@ async function main() {
       await runMesh(subArgs);
       break;
     }
+    case 'meshy-rig': {
+      const { runMeshyRig } = await import('../src/meshy_rig.mjs');
+      await runMeshyRig(subArgs);
+      break;
+    }
     case 'rig-critter': {
       const { runRigCritter } = await import('../src/rig_critter.mjs');
       await runRigCritter(subArgs);
@@ -72,6 +97,11 @@ async function main() {
     case 'retarget-mixamo': {
       const { runRetargetMixamo } = await import('../src/retarget_mixamo.mjs');
       await runRetargetMixamo(subArgs);
+      break;
+    }
+    case 'dye-mask': {
+      const { runDyeMask } = await import('../src/dye_mask.mjs');
+      await runDyeMask(subArgs);
       break;
     }
     case 'optimize': {

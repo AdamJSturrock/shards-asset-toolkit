@@ -1,0 +1,309 @@
+{
+  "unit": "shellback_gunner",
+  "rig": "output/anim-authoring/shellback_gunner/rig-v7/character.glb",
+  "candidates": "output/anim-authoring/shellback_gunner/candidates-v7/candidates.glb",
+  "rigBuild": {
+    "mesh": "input/shellback_gunner.glb",
+    "note": "Meshy auto-rig refused. Faces -Y. Both arms are claws; the musket runs across the chest from the right claw (stock) to the left claw (barrel).",
+    "joints": {
+      "Hips": [
+        0,
+        0.02,
+        0.5
+      ],
+      "Spine02": [
+        0,
+        0.02,
+        0.64
+      ],
+      "Spine01": [
+        0,
+        0.02,
+        0.84
+      ],
+      "Spine": [
+        0,
+        0.02,
+        1.04
+      ],
+      "neck": [
+        0,
+        0.0,
+        1.24
+      ],
+      "Head": [
+        0,
+        -0.05,
+        1.4
+      ],
+      "head_end": [
+        0,
+        -0.05,
+        1.75
+      ],
+      "headfront": [
+        0,
+        -0.5,
+        1.45
+      ],
+      "LeftShoulder": [
+        0.12,
+        0.0,
+        1.15
+      ],
+      "LeftArm": [
+        0.45,
+        -0.05,
+        1.16
+      ],
+      "LeftForeArm": [
+        0.63,
+        -0.15,
+        0.93
+      ],
+      "LeftHand": [
+        0.6,
+        -0.32,
+        1.12
+      ],
+      "LeftHandTip": [
+        0.46,
+        -0.45,
+        1.3
+      ],
+      "RightShoulder": [
+        -0.12,
+        0.0,
+        1.15
+      ],
+      "RightArm": [
+        -0.5,
+        -0.05,
+        1.16
+      ],
+      "RightForeArm": [
+        -0.84,
+        -0.15,
+        0.98
+      ],
+      "RightHand": [
+        -0.62,
+        -0.3,
+        0.8
+      ],
+      "RightHandTip": [
+        -0.38,
+        -0.42,
+        0.7
+      ],
+      "LeftUpLeg": [
+        0.2,
+        0.02,
+        0.48
+      ],
+      "LeftLeg": [
+        0.36,
+        -0.03,
+        0.3
+      ],
+      "LeftFoot": [
+        0.36,
+        0.06,
+        0.12
+      ],
+      "LeftToeBase": [
+        0.36,
+        -0.02,
+        0.04
+      ],
+      "LeftToeTip": [
+        0.36,
+        -0.08,
+        0.02
+      ],
+      "RightUpLeg": [
+        -0.2,
+        0.02,
+        0.48
+      ],
+      "RightLeg": [
+        -0.38,
+        -0.03,
+        0.3
+      ],
+      "RightFoot": [
+        -0.4,
+        0.06,
+        0.12
+      ],
+      "RightToeBase": [
+        -0.4,
+        -0.02,
+        0.04
+      ],
+      "RightToeTip": [
+        -0.4,
+        -0.08,
+        0.02
+      ]
+    },
+    "boneLimits": {
+      "Head": {
+        "zMin": 1.38
+      },
+      "neck": {
+        "zMin": 1.15
+      },
+      "LeftHand": {
+        "xMin": 0.3
+      },
+      "LeftForeArm": {
+        "xMin": 0.3
+      },
+      "RightHand": {
+        "xMax": -0.3
+      },
+      "RightForeArm": {
+        "xMax": -0.3
+      }
+    },
+    "regions": [
+      {
+        "note": "carapace, eye stalks and face plate: one rigid shell on Head (no detach: cut rim faces showed as holes from the front; shoulders are damped in polish instead)",
+        "box": [
+          [
+            -0.8,
+            -0.6,
+            1.4
+          ],
+          [
+            0.8,
+            0.6,
+            1.8
+          ]
+        ],
+        "weights": {
+          "Head": 1.0
+        }
+      },
+      {
+        "note": "musket (fused to both claws): its outward-facing surface within 0.16 of the barrel axis, rigid on the right hand; the left hand follows by IK (polish twoHandProp)",
+        "capsule": [
+          [
+            -0.8,
+            -0.38,
+            0.28
+          ],
+          [
+            0.96,
+            -0.43,
+            1.66
+          ],
+          0.16
+        ],
+        "weights": {
+          "RightHand": 1.0
+        },
+        "detachFrom": [
+          "Head",
+          "neck",
+          "Spine",
+          "Spine01",
+          "Spine02",
+          "Hips",
+          "LeftUpLeg",
+          "RightUpLeg",
+          "LeftLeg",
+          "RightLeg",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftHand",
+          "LeftForeArm"
+        ],
+        "radialNormal": -0.2
+      }
+    ],
+    "boneLimitsNote": "heat diffuses hand weights along the fused musket onto the chest behind it; hands and forearms are kept to their own side"
+  },
+  "candidatesSources": {
+    "note": "retargeted with scripts/blender/retarget_mixamo.py --leg-align 0.3; crew/ = new second-batch downloads (mocap/crew/manifest.json), goblin_worker/ = read-only reuse",
+    "rifle_idle": "crew/rifle_idle_rifle_idle.fbx",
+    "rifle_fire": "crew/firing_rifle_firing_a_rifle_while_standing.fbx",
+    "rifle_walk": "crew/rifle_walk_walking_with_rifle_down.fbx",
+    "rifle_walk_quick": "crew/walk_with_rifle_quickly_walk_forward_with_rifle.fbx",
+    "death_back": "goblin_worker/death_standing_react_death_backward_death_falling_backwards.fbx",
+    "death_fwd": "goblin_worker/death_falling_forward_death_dying_falling_forward.fbx"
+  },
+  "boneKeep": {
+    "Spine02": 0.6,
+    "Spine01": 0.6,
+    "Spine": 0.6,
+    "neck": 0.0,
+    "Head": 0.15,
+    "LeftShoulder": 0.2,
+    "RightShoulder": 0.2
+  },
+  "twoHandProp": {
+    "hand": "RightHand",
+    "other": "LeftHand",
+    "aim": 1.0,
+    "slide": true
+  },
+  "clips": {
+    "idle": {
+      "source": "rifle_idle",
+      "loop": true,
+      "loopBlend": 10,
+      "yawKeep": 0.5,
+      "yawRef": "rest",
+      "note": "Mixamo rifle idle stands 45 deg side-on; half kept"
+    },
+    "walk": {
+      "source": "rifle_walk",
+      "loop": true,
+      "loopBlend": 4,
+      "yawKeep": 0.5,
+      "yawRef": "rest"
+    },
+    "attack": {
+      "source": "rifle_fire",
+      "speed": 0.95,
+      "markers": {
+        "hit": 6
+      },
+      "note": "unit attackSpeed 0.8/s -> 1.25 s cycle; stance kept side-on so the musket points forward; shot at 0.21 s",
+      "recoil": {
+        "at": 6,
+        "hand": "RightHand",
+        "axis": [
+          [
+            -0.8,
+            -0.38,
+            0.28
+          ],
+          [
+            0.96,
+            -0.43,
+            1.66
+          ]
+        ],
+        "bones": {
+          "Spine": 7,
+          "RightArm": 16,
+          "Head": 5
+        },
+        "settle": 0.25,
+        "note": "procedural kick at the shot: muzzle climbs, shoulder and shell rock back, settles in 0.25 s"
+      }
+    },
+    "death": {
+      "source": "death_back",
+      "range": [
+        0,
+        95
+      ],
+      "yawKeep": 0.4,
+      "yawRef": "rest"
+    }
+  }
+}
