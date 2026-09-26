@@ -4,6 +4,8 @@ The official open-source generative 3D asset pipeline for [Shards of Stone](http
 
 This toolkit automates the entire journey from a text prompt or 2D concept into a fully animated, browser-optimised 3D unit. It produces production-ready `.glb` models and Vertex Animation Texture (VAT) bundles that run at 60 fps in web browsers and Three.js scenes with zero manual 3D modeling required.
 
+![Automated 3D unit pipeline conveyor belt: 2D concept to 3D mesh to animated warrior](docs/images/pipeline_conveyor_banner.png)
+
 ---
 
 ## What this toolchain does
