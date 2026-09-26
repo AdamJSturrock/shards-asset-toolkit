@@ -12,7 +12,9 @@ This toolkit automates the entire journey from a text prompt or 2D concept into 
 
 *The Shellback Cutthroat crab pirate (`creep_shellback_cutthroat`) running live in the Three.js web engine on a forest beach shoreline with dynamic water reflections, its creep spawner (`creep_shell_grotto`), and treasure chest props.*
 
-> 🎥 **Video:** You can also inspect the full high-fidelity video directly in [`docs/videos/showcase_shellback_shoreline.mp4`](docs/videos/showcase_shellback_shoreline.mp4).
+![Shellback Cutthroat in-engine 1080p beauty still](docs/images/showcase_shellback_shoreline.png)
+
+> 🎥 **Video:** You can also inspect the full high-fidelity 60 fps video directly in [`docs/videos/showcase_shellback_shoreline.mp4`](docs/videos/showcase_shellback_shoreline.mp4).
 
 ### The end-to-end automated pipeline
 
