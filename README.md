@@ -58,7 +58,7 @@ node bin/shards-asset.mjs vat \
 Building custom maps with custom units usually requires expensive freelance artists or hundreds of hours in 3D modeling packages. 
 
 This repository connects an automated chain:
-1. **Concept generation & cleanup:** Generates isometric 3/4 orthographic unit concepts via Google Gemini, isolates silhouettes, and strips atmospheric effects (smoke, floating embers, ground pedestals) that break 3D generation.
+1. **Concept generation & cleanup:** Generates isometric 3/4 orthographic unit concepts via OpenAI gpt-image-2.5 (or Google Gemini), isolates silhouettes, and strips atmospheric effects (smoke, floating embers, ground pedestals) that break 3D generation.
 2. **3D mesh generation:** Converts clean 2D concepts into 30,000-polygon textured GLBs via the Meshy API in under two minutes.
 3. **Automated rigging & skinning:** Runs headless Blender scripts to fit anatomical skeletons, isolates vertex weights by limb to prevent mesh stretching, and generates procedural gait cycles (for crabs, spiders, scorpions, quadrupeds, dragons) or retargets motion capture.
 4. **Humanoid mocap bridge:** Retargets free Mixamo FBX motion clips onto custom humanoid proportions (goblins, dwarves, ogres) while preserving character stance and isolating weapons.
@@ -103,15 +103,19 @@ export PATH="/Applications/Blender.app/Contents/MacOS:$PATH"
 
 The pipeline uses cloud APIs for image and mesh generation. You will need:
 
-1. **Google Gemini API Key (`GEMINI_API_KEY`):**
-   - Used for concept generation, candidate variations, and background cleanup.
+1. **OpenAI API Key (`OPENAI_API_KEY`), recommended:**
+   - Used for concept generation with `gpt-image-2.5` at quality `high`: `gpt-image-2.5-flare` for text prompts, `gpt-image-2.5-sunburst` when you pass a reference image with `--ref`.
+   - Get a key from the [OpenAI platform](https://platform.openai.com/).
+   - Leave the quality at `high`. 2.5's `high` spends what gpt-image-2's `medium` did, and `max` costs more per image than Gemini 3 Pro Image.
+2. **Google Gemini API Key (`GEMINI_API_KEY`), alternative:**
+   - Used for concepts when no OpenAI key is set, or with `--provider gemini`. Uses Gemini 3 Pro Image ("Nano Banana Pro").
    - Get a key from [Google AI Studio](https://aistudio.google.com/).
-2. **Meshy API Key (`MESHY_API_KEY`):**
+3. **Meshy API Key (`MESHY_API_KEY`):**
    - Used for converting 2D concept images into textured 3D meshes.
    - Get a key and credits from [Meshy.ai](https://www.meshy.ai/).
-3. **Anthropic API Key (`ANTHROPIC_API_KEY`, optional):**
+4. **Anthropic API Key (`ANTHROPIC_API_KEY`, optional):**
    - Used if running in agentic mode where Claude Opus 5 or Astra coordinates complex landmark fitting, diagnoses mesh topologies, and writes custom rigging scripts.
-4. **Mixamo Account (free):**
+5. **Mixamo Account (free):**
    - [Mixamo by Adobe](https://www.mixamo.com) provides thousands of free bipedal animation clips (walk, run, attack, death, spellcast) in FBX format.
 
 ### Environment setup
@@ -123,6 +127,7 @@ cp .env.example .env
 ```
 
 ```env
+OPENAI_API_KEY=your_openai_api_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
 MESHY_API_KEY=your_meshy_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
@@ -135,16 +140,19 @@ BLENDER_PATH=/Applications/Blender.app/Contents/MacOS/Blender
 
 How much does it actually cost to produce an animated game-ready 3D unit?
 
-Because the pipeline automates each step and logs resource consumption, the costs are transparent and predictable:
+Because the pipeline automates each step and logs resource consumption, the costs are transparent and predictable. Run `npm run estimate-cost` for a breakdown; the concept step also prints the real cost of each OpenAI image from the API's usage data.
+
+Concept prices, per 1024x1024 image (September 2026): gpt-image-2.5 at `high` is about $0.053, and Gemini 3 Pro Image is $0.134. On Gemini, the same 3-4 concepts would cost $0.40 to $0.54.
 
 | Stage | Service / Tool | Usage per unit | Estimated cost (USD) |
 |---|---|---|---|
-| **Concept art** | Gemini 3 Pro / Flash | 3-4 candidate generations + 1 isolation | $0.05 to $0.15 |
+| **Concept art** | OpenAI gpt-image-2.5 (quality `high`) | 3-4 candidate generations at ~$0.053 each | $0.16 to $0.21 |
 | **3D mesh generation** | Meshy API | 30 credits (standard 30k poly mesh) | $0.30 to $0.45 |
+| **LOD ladder (optional)** | Meshy remesh | 5 credits per LOD rung; each rung gets a re-baked texture | $0.06 per rung |
 | **Agentic rigging & analysis** | Claude Opus / Astra | ~20,000 to 30,000 tokens (scripting & review) | $0.20 to $0.40 |
 | **Animation authoring** | Blender / Mixamo | Local headless compute (~1-2 minutes) | $0.00 (Free) |
 | **Web optimization & VAT** | gltf-transform + Blender | Local headless compute (~45 seconds) | $0.00 (Free) |
-| **Total per finished unit** | | **All stages combined** | **~$0.55 to $1.00** |
+| **Total per finished unit** | | **All stages combined, before LOD rungs** | **~$0.66 to $1.06** |
 
 ---
 
@@ -152,7 +160,7 @@ Because the pipeline automates each step and logs resource consumption, the cost
 
 ### Stage 1: Concept generation and prompt isolation
 
-Prompt Gemini for an isometric three-quarter orthographic concept with transparent or white background:
+Prompt the image model (gpt-image-2.5 by default) for an isometric three-quarter orthographic concept on a transparent or white background:
 
 | Shellback Cutthroat (Humanoid) | Reef Crab (Multi-legged Critter) |
 |---|---|
