@@ -108,7 +108,7 @@ The pipeline uses cloud APIs for image and mesh generation. You will need:
    - Used for converting 2D concept images into textured 3D meshes.
    - Get a key and credits from [Meshy.ai](https://www.meshy.ai/).
 3. **Anthropic API Key (`ANTHROPIC_API_KEY`, optional):**
-   - Used if running in agentic mode where Claude Opus 3.5 / 5.5 or Astra coordinates complex landmark fitting, diagnoses mesh topologies, and writes custom rigging scripts.
+   - Used if running in agentic mode where Claude Opus 5 or Astra coordinates complex landmark fitting, diagnoses mesh topologies, and writes custom rigging scripts.
 4. **Mixamo Account (free):**
    - [Mixamo by Adobe](https://www.mixamo.com) provides thousands of free bipedal animation clips (walk, run, attack, death, spellcast) in FBX format.
 

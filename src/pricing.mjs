@@ -37,8 +37,8 @@ export const PRICING_TABLE = {
       outputPerMTok: 15.00,
       typicalTokensPerUnit: 25000,
     },
-    'claude-opus-5-5': {
-      label: 'Claude Opus 5.5 / Expert Rigging',
+    'claude-opus-5': {
+      label: 'Claude Opus 5 / Expert Rigging',
       inputPerMTok: 15.00,
       outputPerMTok: 75.00,
       typicalTokensPerUnit: 25000,
