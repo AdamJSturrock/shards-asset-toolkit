@@ -1,0 +1,18 @@
+{
+  "unitId": "ogre_cannoneer",
+  "type": "humanoid",
+  "prompt": "A massive pirate ogre corsair carrying a heavy iron ship cannon mounted on his shoulder, pirate bandana, fantasy RTS siege unit",
+  "polycount": 32000,
+  "textureMax": 1024,
+  "legAlign": 0.4,
+  "clips": {
+    "idle": "./mocap/ogre/idle.fbx",
+    "walk": "./mocap/ogre/walk.fbx",
+    "attack": "./mocap/ogre/cannon_fire.fbx",
+    "death": "./mocap/ogre/collapse.fbx"
+  },
+  "loops": ["idle", "walk"],
+  "targetVerts": 5000,
+  "vat": true,
+  "outputDir": "./output/ogre_cannoneer"
+}

@@ -1,0 +1,20 @@
+{
+  "unitId": "shellback_cutthroat",
+  "name": "Shellback Cutthroat",
+  "type": "humanoid",
+  "prompt": "An upright crab-folk pirate buccaneer with a barnacled red-orange shell, salvaged sailcloth sash, a pirate tricorn wedged on the shell ridge, huge snapping right claw, holding a notched boarding cutlass in the left claw, fantasy RTS style",
+  "polycount": 30000,
+  "textureMax": 1024,
+  "legAlign": 0.5,
+  "weaponBone": "LeftHand",
+  "clips": {
+    "idle": "./mocap/cutthroat/idle.fbx",
+    "walk": "./mocap/cutthroat/walk.fbx",
+    "attack": "./mocap/cutthroat/cutlass_slash.fbx",
+    "death": "./mocap/cutthroat/death.fbx"
+  },
+  "loops": ["idle", "walk"],
+  "targetVerts": 4000,
+  "vat": true,
+  "outputDir": "./output/shellback_cutthroat"
+}

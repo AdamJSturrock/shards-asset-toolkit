@@ -1,0 +1,44 @@
+{
+  "name": "@shardsofstone/asset-toolkit",
+  "version": "1.0.0",
+  "description": "Generative 3D animated unit pipeline for Shards of Stone map makers and web RTS modders",
+  "main": "bin/shards-asset.mjs",
+  "bin": {
+    "shards-asset": "bin/shards-asset.mjs"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "concept": "node bin/shards-asset.mjs concept",
+    "mesh": "node bin/shards-asset.mjs mesh",
+    "rig-critter": "node bin/shards-asset.mjs rig-critter",
+    "retarget-mixamo": "node bin/shards-asset.mjs retarget-mixamo",
+    "optimize": "node bin/shards-asset.mjs optimize",
+    "bake-vat": "node bin/shards-asset.mjs bake-vat",
+    "estimate-cost": "node bin/shards-asset.mjs estimate-cost"
+  },
+  "keywords": [
+    "rts",
+    "three-js",
+    "generative-3d",
+    "blender",
+    "meshy",
+    "gemini",
+    "vat",
+    "vertex-animation-textures",
+    "modding"
+  ],
+  "author": "Adam Sturrock & Shards of Stone Contributors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.0.0",
+    "@gltf-transform/core": "^4.0.0",
+    "@gltf-transform/extensions": "^4.0.0"
+  }
+}
