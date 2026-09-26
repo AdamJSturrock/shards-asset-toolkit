@@ -1,16 +1,28 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Adam Sturrock and Shards of Stone Contributors
 /**
- * Vertex Animation Textures (VAT) baking runner.
- * Spawns headless Blender to bake per-frame vertex offsets into 16-bit texture maps.
+ * Vertex Animation Texture (VAT) baking via headless Blender. EXPERIMENTAL:
+ * the Shards of Stone game renders units with standard GPU skinning plus
+ * instancing today; it does not use this path.
  */
 
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import fs from 'node:fs';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { findBlender } from './rig_critter.mjs';
+import { runBlender } from './blender.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const HELP = `shards-asset bake-vat: bake a skinned, animated GLB into a VAT bundle (EXPERIMENTAL)
+
+Usage:
+  shards-asset bake-vat --input animated.glb [--output-dir ./output/baked] [--unit-id name]
+                        [--target-verts 4000] [--max-frames 256] [--fps 30] [--animations clips.glb]
+
+Writes <unit>_mesh.glb (static mesh, UV2 vertex ids), <unit>_vat_pos.png and
+<unit>_vat_norm.png (16-bit) and <unit>_vat.json (clip table).
+
+Experimental: the Shards of Stone game currently draws units as skinned GLBs
+with standard GPU skinning plus instancing, not VAT. The baker works, but no
+frame-time or memory numbers have been measured for it in the game.`;
 
 export async function runBakeVat(args) {
   const { values } = parseArgs({
@@ -19,59 +31,38 @@ export async function runBakeVat(args) {
       input: { type: 'string' },
       'output-dir': { type: 'string', default: './output/baked' },
       'unit-id': { type: 'string' },
-      'target-verts': { type: 'string', default: '4000' }
-    }
+      'target-verts': { type: 'string', default: '4000' },
+      'max-frames': { type: 'string', default: '256' },
+      fps: { type: 'string', default: '30' },
+      animations: { type: 'string' },
+      help: { type: 'boolean', short: 'h' },
+    },
   });
 
-  if (!values.input) {
-    console.error('Error: --input <path-to-rigged.glb> is required');
-    process.exit(1);
-  }
-
-  const blenderBin = findBlender();
-  if (!blenderBin) {
-    console.error('Error: Blender executable not found.');
-    process.exit(1);
+  if (values.help || !values.input) {
+    console.log(HELP);
+    if (!values.help) process.exit(1);
+    return;
   }
 
   const inputPath = path.resolve(process.cwd(), values.input);
   const outputDir = path.resolve(process.cwd(), values['output-dir']);
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
+  fs.mkdirSync(outputDir, { recursive: true });
   const unitId = values['unit-id'] || path.basename(inputPath, '.glb');
-  const targetVerts = parseInt(values['target-verts'], 10) || 4000;
 
-  console.log(`[Bake-VAT] Baking Vertex Animation Textures for unit: ${unitId}...`);
-  console.log(`[Bake-VAT] Target decimated vertices: ${targetVerts}`);
-  console.log(`[Bake-VAT] Output directory: ${outputDir}`);
-
-  const scriptPath = path.resolve(__dirname, '../scripts/blender/vat_bake.py');
-
+  console.log('[Bake-VAT] EXPERIMENTAL: the game does not render units through VAT today.');
   const blenderArgs = [
-    '-b',
-    '--factory-startup',
-    '--python-exit-code', '1',
-    '--python', scriptPath,
-    '--',
     '--input', inputPath,
     '--unit-id', unitId,
-    '--target-verts', String(targetVerts),
-    '--output-dir', outputDir
+    '--output-dir', outputDir,
+    '--target-verts', values['target-verts'],
+    '--max-frames', values['max-frames'],
+    '--fps', values.fps,
   ];
+  if (values.animations) blenderArgs.push('--animations', path.resolve(process.cwd(), values.animations));
+  runBlender('scripts/blender/vat_bake.py', blenderArgs, { label: 'Bake-VAT' });
 
-  const result = spawnSync(blenderBin, blenderArgs, {
-    stdio: 'inherit',
-    encoding: 'utf-8'
-  });
-
-  if (result.status !== 0) {
-    console.error(`[Bake-VAT] Blender VAT bake failed with exit code: ${result.status}`);
-    process.exit(1);
-  }
-
-  console.log(`[Bake-VAT] VAT bundle baked successfully!`);
+  console.log('[Bake-VAT] VAT bundle written:');
   console.log(`  Mesh:     ${path.join(outputDir, `${unitId}_mesh.glb`)}`);
   console.log(`  Position: ${path.join(outputDir, `${unitId}_vat_pos.png`)}`);
   console.log(`  Normals:  ${path.join(outputDir, `${unitId}_vat_norm.png`)}`);

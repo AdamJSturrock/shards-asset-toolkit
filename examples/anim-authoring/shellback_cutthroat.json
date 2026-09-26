@@ -1,0 +1,342 @@
+{
+  "unit": "shellback_cutthroat",
+  "rig": "output/anim-authoring/shellback_cutthroat/rig-v3/character.glb",
+  "candidates": "output/anim-authoring/shellback_cutthroat/candidates-v2/candidates.glb",
+  "rigBuild": {
+    "mesh": "examples/models/cutthroat_raw_meshy.glb",
+    "note": "Meshy auto-rig refused (pose estimation failed). Faces -Y. Right arm is the claw (x < 0), cutlass in the LEFT hand (x > 0).",
+    "joints": {
+      "Hips": [
+        0,
+        0.03,
+        0.63
+      ],
+      "Spine02": [
+        0,
+        0.03,
+        0.72
+      ],
+      "Spine01": [
+        0,
+        0.03,
+        0.82
+      ],
+      "Spine": [
+        0,
+        0.03,
+        0.92
+      ],
+      "neck": [
+        0,
+        0.02,
+        1.0
+      ],
+      "Head": [
+        0,
+        -0.05,
+        1.1
+      ],
+      "head_end": [
+        0,
+        -0.05,
+        1.45
+      ],
+      "headfront": [
+        0,
+        -0.45,
+        1.1
+      ],
+      "LeftShoulder": [
+        0.1,
+        0.03,
+        0.95
+      ],
+      "LeftArm": [
+        0.44,
+        0.03,
+        0.95
+      ],
+      "LeftForeArm": [
+        0.6,
+        0.08,
+        0.77
+      ],
+      "LeftHand": [
+        0.72,
+        -0.04,
+        0.64
+      ],
+      "LeftHandTip": [
+        0.78,
+        -0.2,
+        0.6
+      ],
+      "RightShoulder": [
+        -0.1,
+        0.03,
+        0.95
+      ],
+      "RightArm": [
+        -0.44,
+        0.03,
+        0.95
+      ],
+      "RightForeArm": [
+        -0.6,
+        0.0,
+        0.9
+      ],
+      "RightHand": [
+        -0.72,
+        -0.01,
+        0.55
+      ],
+      "RightHandTip": [
+        -0.76,
+        -0.03,
+        0.15
+      ],
+      "LeftUpLeg": [
+        0.18,
+        0.04,
+        0.62
+      ],
+      "LeftLeg": [
+        0.34,
+        -0.06,
+        0.4
+      ],
+      "LeftFoot": [
+        0.39,
+        0.02,
+        0.13
+      ],
+      "LeftToeBase": [
+        0.4,
+        -0.1,
+        0.04
+      ],
+      "LeftToeTip": [
+        0.4,
+        -0.2,
+        0.02
+      ],
+      "RightUpLeg": [
+        -0.18,
+        0.04,
+        0.62
+      ],
+      "RightLeg": [
+        -0.32,
+        -0.07,
+        0.4
+      ],
+      "RightFoot": [
+        -0.37,
+        0.0,
+        0.13
+      ],
+      "RightToeBase": [
+        -0.38,
+        -0.12,
+        0.04
+      ],
+      "RightToeTip": [
+        -0.38,
+        -0.2,
+        0.02
+      ]
+    },
+    "boneLimits": {
+      "Head": {
+        "zMin": 0.98
+      },
+      "neck": {
+        "zMin": 0.9
+      }
+    },
+    "regions": [
+      {
+        "note": "carapace, eyes and hat: one rigid shell on Head",
+        "box": [
+          [
+            -0.72,
+            -0.6,
+            1.03
+          ],
+          [
+            0.72,
+            0.6,
+            1.8
+          ]
+        ],
+        "weights": {
+          "Head": 1.0
+        },
+        "grow": {
+          "zMin": 0.85,
+          "normalZMax": -0.3,
+          "foldRings": 2,
+          "excludeDominant": [
+            "LeftArm",
+            "LeftForeArm",
+            "LeftHand",
+            "RightArm",
+            "RightForeArm",
+            "RightHand"
+          ]
+        },
+        "web": {
+          "distance": 0.1,
+          "iterations": 400
+        }
+      },
+      {
+        "note": "claw propodus (the big fixed half) rigid on the forearm",
+        "box": [
+          [
+            -1.0,
+            -0.4,
+            0.55
+          ],
+          [
+            -0.56,
+            0.4,
+            0.86
+          ]
+        ],
+        "weights": {
+          "RightForeArm": 1.0
+        }
+      },
+      {
+        "note": "claw pincer tips rigid on the hand",
+        "box": [
+          [
+            -1.0,
+            -0.4,
+            0.0
+          ],
+          [
+            -0.5,
+            0.4,
+            0.55
+          ]
+        ],
+        "weights": {
+          "RightHand": 1.0
+        }
+      },
+      {
+        "note": "cutlass (fused to the left fist) rigid on the hand",
+        "capsule": [
+          [
+            0.68,
+            -0.08,
+            0.44
+          ],
+          [
+            0.93,
+            -0.47,
+            1.62
+          ],
+          0.09
+        ],
+        "weights": {
+          "LeftHand": 1.0
+        }
+      }
+    ]
+  },
+  "candidatesSources": {
+    "note": "retargeted with scripts/blender/retarget_mixamo.py --leg-align 0.3; goblin_worker/ = read-only reuse of goblin_worker's Mixamo downloads, crew/ = second-batch downloads (mocap/crew/manifest.json)",
+    "idle_axe": "goblin_worker/idle_standing_idle_standing_idle_with_axe.fbx --mirror",
+    "walk_mutant": "goblin_worker/walk_mutant_walking_mutant_brutal_walk.fbx",
+    "walk_axe": "goblin_worker/walk_standing_walk_forward_walking_forward_with_axe.fbx --mirror",
+    "slash_h": "goblin_worker/attack_standing_melee_attack_horizontal_right_to_left_attack_with_axe.fbx --mirror (cutlass is in the LEFT hand)",
+    "slash_down": "goblin_worker/attack_standing_melee_attack_downward_downward_attack_with_axe.fbx --mirror",
+    "claw_swipe": "goblin_worker/attack_mutant_swiping_mutant_attacking_with_left_hand.fbx --mirror (the claw is the RIGHT arm)",
+    "death_back": "goblin_worker/death_standing_react_death_backward_death_falling_backwards.fbx",
+    "death_fwd": "goblin_worker/death_falling_forward_death_dying_falling_forward.fbx",
+    "slash_sns": "crew/sword_and_shield_slash_sword_and_shield_downward_slash.fbx --mirror (cutlass in the LEFT hand)",
+    "slash_out": "crew/stable_sword_outward_slash_outward_slashing_with_a_sword_standing_stable.fbx --mirror",
+    "claw_zombie": "goblin_worker/attack_zombie_punching_zombie_attack_with_right_hand.fbx (the claw IS the right arm: no mirror)"
+  },
+  "boneKeep": {
+    "Spine02": 0.6,
+    "Spine01": 0.6,
+    "Spine": 0.6,
+    "neck": 0.0,
+    "Head": 0.15
+  },
+  "clips": {
+    "idle": {
+      "source": "idle_axe",
+      "loop": true,
+      "loopBlend": 10,
+      "yawKeep": 0.0,
+      "yawRef": "rest",
+      "note": "Mixamo's axe idle stands 50 deg side-on; turned to face forward"
+    },
+    "walk": {
+      "source": "walk_mutant",
+      "loop": true,
+      "loopBlend": 4,
+      "yawKeep": 0.5,
+      "yawRef": "rest"
+    },
+    "attack": {
+      "source": "slash_sns",
+      "range": [
+        2,
+        38
+      ],
+      "speed": 1.2,
+      "yawKeep": 0.3,
+      "yawRef": "rest",
+      "boneKeep": {
+        "Spine02": 0.4,
+        "Spine01": 0.4,
+        "Spine": 0.4,
+        "neck": 0.0,
+        "Head": 0.1
+      },
+      "markers": {
+        "windup": 12,
+        "hit": 18
+      },
+      "note": "v2: sword-and-shield downward slash, mirrored into the left-hand cutlass (v1's axe swing tipped the shell back 54 deg; this one peaks at 29 before damping). attackSpeed 1.0/s -> 1.0 s, hit 0.43 s"
+    },
+    "attack_2": {
+      "source": "claw_zombie",
+      "range": [
+        22,
+        50
+      ],
+      "speed": 0.95,
+      "yawKeep": 0.3,
+      "yawRef": "rest",
+      "boneKeep": {
+        "Spine02": 0.4,
+        "Spine01": 0.4,
+        "Spine": 0.4,
+        "neck": 0.0,
+        "Head": 0.1
+      },
+      "markers": {
+        "hit": 39
+      },
+      "note": "v2: one right-hand zombie punch as a claw jab (v1's mutant swipe lunged 47 deg forward); joins the attack pool"
+    },
+    "death": {
+      "source": "death_back",
+      "range": [
+        0,
+        95
+      ],
+      "yawKeep": 0.4,
+      "yawRef": "rest"
+    }
+  },
+  "markerFps": 30
+}

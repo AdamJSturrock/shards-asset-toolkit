@@ -4,17 +4,18 @@
   "type": "humanoid",
   "prompt": "An upright crab-folk pirate buccaneer with a barnacled red-orange shell, salvaged sailcloth sash, a pirate tricorn wedged on the shell ridge, huge snapping right claw, holding a notched boarding cutlass in the left claw, fantasy RTS style",
   "polycount": 30000,
-  "textureMax": 1024,
-  "legAlign": 0.5,
-  "weaponBone": "LeftHand",
+  "note": "Meshy's auto-rig refuses this body (pose estimation failed), so the rig comes from rig-humanoid: run 'shards-asset rig-humanoid --spec examples/anim-authoring/shellback_cutthroat.json --out output/anim-authoring/shellback_cutthroat/rig-v3/character.glb' first and point riggedGlb at it. The final clips come from polish-clips with the same spec.",
+  "riggedGlb": "./output/anim-authoring/shellback_cutthroat/rig-v3/character.glb",
+  "legAlign": 0.3,
   "clips": {
-    "idle": "./mocap/cutthroat/idle.fbx",
-    "walk": "./mocap/cutthroat/walk.fbx",
-    "attack": "./mocap/cutthroat/cutlass_slash.fbx",
-    "death": "./mocap/cutthroat/death.fbx"
+    "idle_axe": "./mocap/goblin_worker/idle_standing_idle_standing_idle_with_axe.fbx",
+    "walk_mutant": "./mocap/goblin_worker/walk_mutant_walking_mutant_brutal_walk.fbx",
+    "slash_sns": "./mocap/crew/sword_and_shield_slash_sword_and_shield_downward_slash.fbx",
+    "claw_zombie": "./mocap/goblin_worker/attack_zombie_punching_zombie_attack_with_right_hand.fbx",
+    "death_back": "./mocap/goblin_worker/death_standing_react_death_backward_death_falling_backwards.fbx"
   },
-  "loops": ["idle", "walk"],
-  "targetVerts": 4000,
-  "vat": true,
+  "loops": ["idle_axe", "walk_mutant"],
+  "mirror": ["idle_axe", "slash_sns"],
+  "textureMax": 1024,
   "outputDir": "./output/shellback_cutthroat"
 }

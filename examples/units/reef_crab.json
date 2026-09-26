@@ -1,11 +1,11 @@
 {
   "unitId": "reef_crab",
   "type": "critter",
-  "template": "crustacean",
-  "prompt": "A giant armored reef crab unit with coral on its carapace, heavy snapping claws, 8 walking legs, fantasy RTS style",
+  "profile": "reef_crab",
+  "version": "v1",
+  "prompt": "A giant armoured reef crab with coral on its carapace, two heavy snapping claws and six walking legs, fantasy RTS style",
   "polycount": 30000,
+  "symmetry": "on",
   "textureMax": 1024,
-  "targetVerts": 4000,
-  "vat": true,
   "outputDir": "./output/reef_crab"
 }

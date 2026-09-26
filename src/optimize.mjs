@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Adam Sturrock and Shards of Stone Contributors
 /**
  * Web RTS optimization module.
  * Shrinks textures to 1024px, applies KTX2 Basis Universal compression, and applies meshopt.
@@ -15,13 +17,21 @@ export async function runOptimize(args) {
       input: { type: 'string' },
       output: { type: 'string' },
       'texture-max': { type: 'string', default: '1024' },
-      codec: { type: 'string', default: 'mixed' }
+      codec: { type: 'string', default: 'mixed' },
+      help: { type: 'boolean', short: 'h' },
     }
   });
 
-  if (!values.input) {
-    console.error('Error: --input <path-to-model.glb> is required');
-    process.exit(1);
+  if (values.help || !values.input) {
+    console.log(`shards-asset optimize: resize textures, transcode to KTX2 and compress geometry with meshopt
+
+Usage:
+  shards-asset optimize --input animated.glb --output optimized.glb [--texture-max 1024]
+
+Run it last: after the Blender passes and after dye-mask (dye-mask needs the
+uncompressed base colour). Falls back to meshopt only if KTX2 encoding fails.`);
+    if (!values.help) process.exit(1);
+    return;
   }
 
   const inputPath = path.resolve(process.cwd(), values.input);
@@ -72,6 +82,9 @@ export async function runOptimize(args) {
       'optimize',
       '--compress', 'meshopt',
       '--texture-compress', 'ktx2',
+      // never decimate a rigged unit here: simplify can merge vertices across
+      // weight boundaries; decimate on purpose, before rigging, if you need to
+      '--simplify', 'false',
       tempResized,
       outputPath
     ];
@@ -82,16 +95,12 @@ export async function runOptimize(args) {
     });
 
     if (res.status !== 0) {
-      console.warn(`[Optimize] Full KTX2 optimize failed (toktx may be missing). Applying meshopt only.`);
-      const fallbackArgs = [
-        'copy',
-        '--compress', 'meshopt',
-        tempResized,
-        outputPath
-      ];
-      spawnSync(hasGlobalGtf ? 'gltf-transform' : 'npx', hasGlobalGtf ? fallbackArgs : ['@gltf-transform/cli', ...fallbackArgs], {
+      console.warn(`[Optimize] KTX2 encoding failed (it needs the KTX-Software "ktx" CLI on your PATH). Applying meshopt only.`);
+      const fallbackArgs = ['meshopt', tempResized, outputPath];
+      res = spawnSync(hasGlobalGtf ? 'gltf-transform' : 'npx', hasGlobalGtf ? fallbackArgs : ['@gltf-transform/cli', ...fallbackArgs], {
         stdio: 'inherit'
       });
+      if (res.status !== 0) throw new Error('gltf-transform meshopt failed');
     }
 
     // Cleanup temp file

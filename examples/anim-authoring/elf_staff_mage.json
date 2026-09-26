@@ -1,0 +1,269 @@
+{
+ "unit": "elf_staff_mage",
+ "rigFix": {
+  "input": "input/elf_staff_mage/rigged.glb",
+  "weapons": [
+   {
+    "hand": "RightHand",
+    "forearm": "RightForeArm",
+    "fistRadius": 0.055
+   }
+  ],
+  "skirts": [
+   {
+    "note": "ivory robe from the waist to the hem",
+    "box": [
+     [
+      -0.45,
+      -0.35,
+      0.14
+     ],
+     [
+      0.45,
+      0.35,
+      0.97
+     ]
+    ],
+    "waistZ": 0.97,
+    "hemZ": 0.12,
+    "hipsAtWaist": 0.8,
+    "hipsAtHem": 0.3,
+    "ownSide": 0.65
+   }
+  ]
+ },
+ "rig": "output/anim-authoring/elf_staff_mage/rig-v1/rig.glb",
+ "candidates": "output/anim-authoring/elf_staff_mage/cand-v1/candidates.glb",
+ "candidatesSources": "retarget --leg-align 0.5: crew casts + goblin_worker walks/idles/deaths + remaster S&S casting/power-up",
+ "boneKeep": {
+  "neck": 0.6,
+  "Head": 0.6
+ },
+ "clampIgnoreBones": [
+  "RightHand",
+  "LeftUpLeg",
+  "RightUpLeg"
+ ],
+ "uprightProp": {
+  "hand": "RightHand",
+  "axis": [
+   [
+    -0.62,
+    -0.05,
+    0.1
+   ],
+   [
+    -0.62,
+    -0.05,
+    1.72
+   ]
+  ],
+  "maxTilt": 30
+ },
+ "clips": {
+  "idle": {
+   "source": "idle_cast",
+   "loop": true,
+   "yawKeep": 0.0,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "note": "ready-to-cast stance turned to face forward",
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 12
+   }
+  },
+  "idle_2": {
+   "source": "idle_bored",
+   "loop": true,
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 15
+   }
+  },
+  "walk": {
+   "source": "walk_axe",
+   "loop": true,
+   "yawKeep": 0.5,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 15
+   }
+  },
+  "attack": {
+   "source": "cast_1h",
+   "range": [
+    17,
+    59
+   ],
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "cast": 23
+   },
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 70
+   },
+   "note": "staff thrust; attackSpeed 0.7/s -> 1.43 s; the thrust peaks 0.2 s in (the game releases at 0.12 s)"
+  },
+  "special_1": {
+   "source": "cast_up",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "boneKeep": {
+    "Spine02": 0.45,
+    "Spine01": 0.45,
+    "Spine": 0.45,
+    "neck": 0.5,
+    "Head": 0.6
+   },
+   "markers": {
+    "cast": 17
+   },
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 45
+   },
+   "note": "starfire bolt / entangle / hoarfrost lattice: two-hand upward pull"
+  },
+  "special_2": {
+   "source": "cast_area",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "boneKeep": {
+    "Spine02": 0.35,
+    "Spine01": 0.35,
+    "Spine": 0.35,
+    "neck": 0.5,
+    "Head": 0.6
+   },
+   "markers": {
+    "cast": 36
+   },
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 45
+   },
+   "groundClamp": true,
+   "note": "moonbeam / cone of cold: two-hand cast at the ground (spine kept at 35%: Mixamo bows 98 deg)"
+  },
+  "special_3": {
+   "source": "power_up",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "cast": 14
+   },
+   "uprightProp": {
+    "hand": "RightHand",
+    "axis": [
+     [
+      -0.62,
+      -0.05,
+      0.1
+     ],
+     [
+      -0.62,
+      -0.05,
+      1.72
+     ]
+    ],
+    "maxTilt": 45
+   },
+   "groundClamp": true,
+   "note": "nature shield / crystal prison: gather power"
+  },
+  "death": {
+   "source": "death_back",
+   "yawKeep": 0.4,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "uprightProp": null
+  },
+  "death_2": {
+   "source": "death_fwd",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "groundClamp": true,
+   "uprightProp": null
+  }
+ }
+}

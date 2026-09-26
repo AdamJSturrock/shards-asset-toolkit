@@ -1,0 +1,141 @@
+{
+ "unit": "dwarf_axe_shield",
+ "rigFix": {
+  "input": "input/dwarf_axe_shield/rigged.glb",
+  "weapons": [
+   {
+    "hand": "RightHand",
+    "forearm": "RightForeArm",
+    "fistRadius": 0.055
+   }
+  ],
+  "shield": {
+   "glb": "input/dwarf_axe_shield/shield.glb",
+   "bone": "LeftForeArm",
+   "size": 0.55,
+   "sizeRef": "headTop",
+   "faceLocal": [
+    0.1,
+    0,
+    -1
+   ],
+   "downLocal": [
+    1,
+    0,
+    0
+   ],
+   "along": 0.5,
+   "gap": 0.004,
+   "textureSize": 1024,
+   "back": {
+    "style": "metal",
+    "colour": [
+     0.4,
+     0.42,
+     0.45
+    ],
+    "rim": [
+     0.33,
+     0.34,
+     0.36
+    ],
+    "strap": [
+     0.33,
+     0.19,
+     0.09
+    ]
+   }
+  }
+ },
+ "rig": "output/anim-authoring/dwarf_axe_shield/rig-v1/rig.glb",
+ "candidates": "output/anim-authoring/dwarf_axe_shield/cand-v1/candidates.glb",
+ "candidatesSources": "retarget --leg-align 0.4 from mocap/remaster (S&S set) + crew downward slash; see cand-v1/candidates.json",
+ "boneKeep": {
+  "neck": 0.6,
+  "Head": 0.6
+ },
+ "clips": {
+  "idle": {
+   "source": "idle_ss",
+   "loop": true,
+   "yawKeep": 0.0,
+   "yawRef": "rest",
+   "note": "Mixamo sword-and-shield idle, turned to face forward",
+   "groundClamp": true
+  },
+  "idle_2": {
+   "source": "idle_look",
+   "loop": true,
+   "yawKeep": 0.5,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "walk": {
+   "source": "walk_ss",
+   "loop": true,
+   "yawKeep": 0.5,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "attack": {
+   "source": "slash_down",
+   "range": [
+    3,
+    40
+   ],
+   "speed": 1.25,
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "hit": 17
+   },
+   "note": "one downward slash, 37 frames sped 1.25 -> 0.99 s; hit at 0.47 s"
+  },
+  "attack_2": {
+   "source": "slash_cross",
+   "range": [
+    4,
+    44
+   ],
+   "speed": 1.35,
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "hit": 24
+   },
+   "note": "cross slash, 40 frames sped 1.35 -> 0.99 s"
+  },
+  "special_1": {
+   "source": "idle_to_block",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "note": "shield_wall: raise the shield to block (idle-to-block at 0.7x, ends in the block pose)",
+   "speed": 0.7,
+   "groundClamp": true
+  },
+  "special_2": {
+   "source": "hilt",
+   "yawKeep": 0.3,
+   "yawRef": "rest",
+   "markers": {
+    "hit": 12
+   },
+   "note": "bulwark_bash: hilt/shield strike"
+  },
+  "death": {
+   "source": "death_back",
+   "yawKeep": 0.4,
+   "yawRef": "rest",
+   "groundClamp": true
+  },
+  "death_2": {
+   "source": "death_fwd",
+   "yawKeep": 0.4,
+   "yawRef": "rest",
+   "groundClamp": true
+  }
+ },
+ "clampIgnoreBones": [
+  "RightHand"
+ ]
+}

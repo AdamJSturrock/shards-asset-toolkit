@@ -1,0 +1,18 @@
+{
+  "unitId": "goblin_worker",
+  "type": "humanoid",
+  "prompt": "A hunched goblin worker carrying a crude mining pickaxe, patched leather tunic, fantasy RTS style",
+  "tpose": true,
+  "polycount": 30000,
+  "height": 1.1,
+  "legAlign": 0.5,
+  "clips": {
+    "idle": "./mocap/goblin_worker/idle.fbx",
+    "walk": "./mocap/goblin_worker/walk.fbx",
+    "attack": "./mocap/goblin_worker/attack.fbx",
+    "death": "./mocap/goblin_worker/death.fbx"
+  },
+  "loops": ["idle", "walk"],
+  "textureMax": 1024,
+  "outputDir": "./output/goblin_worker"
+}

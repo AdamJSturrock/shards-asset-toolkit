@@ -1,0 +1,591 @@
+{
+ "unit": "mounted_knight",
+ "mountRig": {
+  "mesh": "input/mounted_knight/body.glb",
+  "mount": {
+   "plan": "quadruped",
+   "toeForward": 0.06,
+   "joints": {
+    "root": [
+     0,
+     0.15,
+     0.0
+    ],
+    "root_tip": [
+     0,
+     -0.15,
+     0.0
+    ],
+    "hips": [
+     0,
+     0.52,
+     0.9
+    ],
+    "spine": [
+     0,
+     0.1,
+     0.92
+    ],
+    "chest": [
+     0,
+     -0.25,
+     0.95
+    ],
+    "neck_base": [
+     0,
+     -0.33,
+     1.0
+    ],
+    "head_base": [
+     0,
+     -0.64,
+     1.33
+    ],
+    "head_tip": [
+     0,
+     -0.9,
+     1.08
+    ],
+    "tail_0": [
+     0,
+     0.63,
+     1.0
+    ],
+    "tail_1": [
+     0,
+     0.77,
+     0.85
+    ],
+    "tail_2": [
+     0,
+     0.83,
+     0.66
+    ],
+    "tail_3": [
+     0,
+     0.84,
+     0.43
+    ]
+   },
+   "legs": {
+    "front": {
+     "yRange": [
+      -0.35,
+      0.1
+     ],
+     "refTop": 0.44,
+     "joints": {
+      "shoulder": 0.8,
+      "elbow": 0.46,
+      "fetlock": 0.15,
+      "ftoe": 0.0
+     }
+    },
+    "hind": {
+     "yRange": [
+      0.3,
+      0.78
+     ],
+     "refTop": 0.48,
+     "joints": {
+      "hip": 0.8,
+      "stifle": 0.5,
+      "hock": 0.29,
+      "htoe": 0.0
+     }
+    }
+   }
+  },
+  "rider": {
+   "joints": {
+    "Hips": [
+     0,
+     0.08,
+     1.08
+    ],
+    "Spine02": [
+     0,
+     0.1,
+     1.2
+    ],
+    "Spine01": [
+     0,
+     0.11,
+     1.31
+    ],
+    "Spine": [
+     0,
+     0.11,
+     1.41
+    ],
+    "neck": [
+     0,
+     0.1,
+     1.5
+    ],
+    "Head": [
+     0,
+     0.08,
+     1.57
+    ],
+    "head_end": [
+     0,
+     0.08,
+     1.76
+    ],
+    "headfront": [
+     0,
+     -0.05,
+     1.62
+    ],
+    "LeftUpLeg": [
+     0.11,
+     0.08,
+     1.03
+    ],
+    "LeftLeg": [
+     0.25,
+     -0.03,
+     0.93
+    ],
+    "LeftFoot": [
+     0.27,
+     0.03,
+     0.66
+    ],
+    "LeftToeBase": [
+     0.28,
+     -0.03,
+     0.62
+    ],
+    "LeftToeTip": [
+     0.28,
+     -0.1,
+     0.61
+    ],
+    "LeftShoulder": [
+     0.07,
+     0.1,
+     1.43
+    ],
+    "LeftArm": [
+     0.2,
+     0.12,
+     1.43
+    ],
+    "LeftForeArm": [
+     0.285,
+     0.1,
+     1.26
+    ],
+    "LeftHand": [
+     0.32,
+     0.02,
+     1.08
+    ],
+    "LeftHandTip": [
+     0.33,
+     -0.03,
+     1.02
+    ],
+    "RightUpLeg": [
+     -0.11,
+     0.08,
+     1.03
+    ],
+    "RightLeg": [
+     -0.25,
+     -0.03,
+     0.93
+    ],
+    "RightFoot": [
+     -0.27,
+     0.03,
+     0.66
+    ],
+    "RightToeBase": [
+     -0.28,
+     -0.03,
+     0.62
+    ],
+    "RightToeTip": [
+     -0.28,
+     -0.1,
+     0.61
+    ],
+    "RightShoulder": [
+     -0.07,
+     0.1,
+     1.43
+    ],
+    "RightArm": [
+     -0.2,
+     0.12,
+     1.43
+    ],
+    "RightForeArm": [
+     -0.31,
+     0.1,
+     1.28
+    ],
+    "RightHand": [
+     -0.24,
+     -0.04,
+     1.2
+    ],
+    "RightHandTip": [
+     -0.22,
+     -0.1,
+     1.19
+    ]
+   },
+   "parent": "horse_hips"
+  },
+  "riderRegions": [
+   {
+    "box": [
+     [
+      -0.45,
+      -0.2,
+      1.03
+     ],
+     [
+      0.45,
+      0.42,
+      1.6
+     ]
+    ],
+    "note": "rider torso, arms, saddle top"
+   },
+   {
+    "box": [
+     [
+      -0.45,
+      -0.25,
+      1.45
+     ],
+     [
+      0.45,
+      0.6,
+      2.0
+     ]
+    ],
+    "note": "helmet and plume"
+   },
+   {
+    "capsule": [
+     [
+      -0.23,
+      -0.02,
+      1.18
+     ],
+     [
+      -0.24,
+      -0.5,
+      1.86
+     ],
+     0.07
+    ],
+    "note": "sword"
+   },
+   {
+    "capsule": [
+     [
+      0.1,
+      0.08,
+      1.03
+     ],
+     [
+      0.26,
+      -0.03,
+      0.93
+     ],
+     0.09
+    ],
+    "maxSat": 0.35
+   },
+   {
+    "capsule": [
+     [
+      0.26,
+      -0.03,
+      0.93
+     ],
+     [
+      0.28,
+      0.03,
+      0.64
+     ],
+     0.085
+    ],
+    "maxSat": 0.35
+   },
+   {
+    "capsule": [
+     [
+      0.28,
+      0.03,
+      0.64
+     ],
+     [
+      0.29,
+      -0.1,
+      0.6
+     ],
+     0.07
+    ],
+    "maxSat": 0.35
+   },
+   {
+    "capsule": [
+     [
+      -0.1,
+      0.08,
+      1.03
+     ],
+     [
+      -0.26,
+      -0.03,
+      0.93
+     ],
+     0.09
+    ],
+    "maxSat": 0.35
+   },
+   {
+    "capsule": [
+     [
+      -0.26,
+      -0.03,
+      0.93
+     ],
+     [
+      -0.28,
+      0.03,
+      0.64
+     ],
+     0.085
+    ],
+    "maxSat": 0.35
+   },
+   {
+    "capsule": [
+     [
+      -0.28,
+      0.03,
+      0.64
+     ],
+     [
+      -0.29,
+      -0.1,
+      0.6
+     ],
+     0.07
+    ],
+    "maxSat": 0.35
+   }
+  ],
+  "shield": {
+   "glb": "input/mounted_knight/shield.glb",
+   "bone": "LeftForeArm",
+   "size": 0.27,
+   "sizeRef": "height",
+   "along": 0.5,
+   "gap": 0.004,
+   "textureSize": 1024,
+   "back": {
+    "style": "planks",
+    "colour": [
+     0.26,
+     0.17,
+     0.1
+    ],
+    "rim": [
+     0.45,
+     0.46,
+     0.48
+    ],
+    "strap": [
+     0.33,
+     0.19,
+     0.09
+    ]
+   },
+   "tposeFace": [
+    0.07,
+    0.03,
+    1.0
+   ],
+   "tposeDown": [
+    0.17,
+    0.98,
+    -0.05
+   ],
+   "tposeAxis": [
+    1,
+    0,
+    0
+   ]
+  }
+ },
+ "rig": "output/anim-authoring/mounted_knight/rig-v1/character.glb",
+ "mountClips": {
+  "rig": "output/anim-authoring/mounted_knight/rig-v1/character.glb",
+  "candidates": "output/anim-authoring/mounted_knight/cand-v1/candidates.glb",
+  "riderLock": {
+   "legs": 0.0,
+   "Hips": 0.15,
+   "Spine02": 0.6,
+   "Spine01": 0.6,
+   "Spine": 0.6,
+   "neck": 0.7
+  },
+  "clampIgnoreBones": [
+   "RightHand"
+  ],
+  "mount": {
+   "stride": 20,
+   "flex": 45,
+   "nod": 6,
+   "tailSway": 10,
+   "gallopStride": 34,
+   "bodyHalfWidth": 0.3
+  },
+  "clips": {
+   "idle": {
+    "frames": 90,
+    "loop": true,
+    "horse": "idle",
+    "rider": {
+     "source": "idle_ss",
+     "range": [
+      0,
+      76
+     ]
+    },
+    "groundClamp": true
+   },
+   "idle_2": {
+    "frames": 110,
+    "loop": true,
+    "horse": "look",
+    "rider": {
+     "source": "idle_look",
+     "range": [
+      0,
+      110
+     ]
+    },
+    "groundClamp": true
+   },
+   "walk": {
+    "frames": 32,
+    "loop": true,
+    "horse": "walk",
+    "rider": {
+     "source": "idle_ss",
+     "hold": 0
+    },
+    "groundClamp": true
+   },
+   "attack": {
+    "frames": 33,
+    "horse": "stamp",
+    "horseArgs": {
+     "amp": 0.6
+    },
+    "rider": {
+     "source": "slash_down",
+     "range": [
+      3,
+      40
+     ]
+    },
+    "markers": {
+     "hit": 0.38
+    },
+    "note": "downward slash from the saddle while the horse paws; attackSpeed 0.9/s -> 1.1 s"
+   },
+   "attack_2": {
+    "frames": 33,
+    "horse": "stamp",
+    "horseArgs": {
+     "amp": 0.4
+    },
+    "rider": {
+     "source": "slash_cross",
+     "range": [
+      4,
+      44
+     ]
+    },
+    "markers": {
+     "hit": 0.5
+    }
+   },
+   "special_1": {
+    "frames": 36,
+    "horse": "gallop",
+    "horseArgs": {
+     "cycles": 2
+    },
+    "rider": {
+     "source": "hilt",
+     "range": [
+      0,
+      30
+     ]
+    },
+    "markers": {
+     "hit": 0.4
+    },
+    "note": "knight_charge: two gallop strides, sword thrust"
+   },
+   "special_2": {
+    "frames": 30,
+    "horse": "stamp",
+    "horseArgs": {
+     "amp": 0.3
+    },
+    "rider": {
+     "source": "idle_to_block",
+     "range": [
+      0,
+      17
+     ]
+    },
+    "note": "knight_shield: raise the shield"
+   },
+   "special_3": {
+    "frames": 36,
+    "horse": "rear",
+    "horseArgs": {
+     "deg": 22
+    },
+    "rider": {
+     "source": "slash_down",
+     "range": [
+      3,
+      40
+     ]
+    },
+    "markers": {
+     "hit": 0.45
+    },
+    "note": "knight_impale: the horse rears, the rider strikes down"
+   },
+   "death": {
+    "frames": 75,
+    "horse": "death",
+    "rider": {
+     "source": "death_fwd",
+     "range": [
+      0,
+      60
+     ]
+    },
+    "groundClamp": true
+   }
+  }
+ }
+}

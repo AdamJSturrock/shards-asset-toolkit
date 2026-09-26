@@ -1,15 +1,40 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Adam Sturrock and Shards of Stone Contributors
 /**
- * Humanoid Mixamo retargeting module via headless Blender.
+ * Humanoid Mixamo retargeting via headless Blender (scripts/blender/retarget_mixamo.py).
  */
 
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import fs from 'node:fs';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { findBlender } from './rig_critter.mjs';
+import { runBlender, scriptDoc } from './blender.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const SCRIPT = 'scripts/blender/retarget_mixamo.py';
+
+const HELP = `shards-asset retarget-mixamo: retarget Mixamo FBX clips onto a 24-joint Meshy-named humanoid
+
+Usage:
+  shards-asset retarget-mixamo --target rigged.glb --clip idle=mocap/idle.fbx --clip slash=mocap/slash.fbx \\
+    --loop idle [--mirror slash] [--leg-align 0.5] --out candidates.glb
+
+Options:
+  --target <glb>        skinned humanoid (Meshy auto-rig, rig-humanoid or rig-fixup output)
+  --clip name=fbx       repeatable; Mixamo FBX downloaded "without skin"
+  --loop <name>         repeatable; keep that clip in place (horizontal root drift removed)
+  --mirror <name>       repeatable; mirror the clip left-right (a right-handed slash for a
+                        unit that holds its weapon in the left hand)
+  --leg-align <0..1>    0 keeps the character's own leg stance, 1 copies Mixamo's (default 0.5)
+  --keep-existing       also export the GLB's existing actions
+  --out <glb>           candidate clips; pick and trim them with polish-clips
+
+Known issue (weapon grip): Mixamo's rest fist is palm-down with the blade
+pointing forward. T-pose concept art with the weapon drawn upright gives a
+thumb-up fist, so retargeted clips carry a ~90 degree roll on the held weapon.
+A grip normalise at rest is being built; until then check sword clips in
+clip-review and correct the roll by hand if needed.
+
+--- ${SCRIPT} ---
+`;
 
 export async function runRetargetMixamo(args) {
   const { values } = parseArgs({
@@ -18,66 +43,30 @@ export async function runRetargetMixamo(args) {
       target: { type: 'string' },
       clip: { type: 'string', multiple: true },
       loop: { type: 'string', multiple: true },
+      mirror: { type: 'string', multiple: true },
       'leg-align': { type: 'string', default: '0.5' },
+      'keep-existing': { type: 'boolean', default: false },
       out: { type: 'string' },
-    }
+      help: { type: 'boolean', short: 'h' },
+    },
   });
 
-  if (!values.target) {
-    console.error('Error: --target <path-to-humanoid.glb> is required');
-    process.exit(1);
-  }
-
-  const blenderBin = findBlender();
-  if (!blenderBin) {
-    console.error('Error: Blender executable not found.');
-    process.exit(1);
+  if (values.help || !values.target || !values.clip) {
+    console.log(HELP + scriptDoc(SCRIPT));
+    if (!values.help) process.exit(1);
+    return;
   }
 
   const targetPath = path.resolve(process.cwd(), values.target);
   const outputPath = path.resolve(process.cwd(), values.out || './output/retargeted.glb');
-  const outDir = path.dirname(outputPath);
-  if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir, { recursive: true });
-  }
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-  const scriptPath = path.resolve(__dirname, '../scripts/blender/retarget_mixamo.py');
+  const blenderArgs = ['--target', targetPath, '--leg-align', values['leg-align'], '--out', outputPath];
+  for (const c of values.clip) blenderArgs.push('--clip', c);
+  for (const l of values.loop || []) blenderArgs.push('--loop', l);
+  for (const m of values.mirror || []) blenderArgs.push('--mirror', m);
+  if (values['keep-existing']) blenderArgs.push('--keep-existing');
 
-  const blenderArgs = [
-    '-b',
-    '--factory-startup',
-    '--python-exit-code', '1',
-    '--python', scriptPath,
-    '--',
-    '--target', targetPath,
-    '--leg-align', values['leg-align'] || '0.5',
-    '--out', outputPath
-  ];
-
-  if (values.clip) {
-    for (const c of values.clip) {
-      blenderArgs.push('--clip', c);
-    }
-  }
-
-  if (values.loop) {
-    for (const l of values.loop) {
-      blenderArgs.push('--loop', l);
-    }
-  }
-
-  console.log(`[Retarget] Retargeting Mixamo clips to ${targetPath}...`);
-  console.log(`[Retarget] Leg align ratio: ${values['leg-align']}`);
-
-  const result = spawnSync(blenderBin, blenderArgs, {
-    stdio: 'inherit',
-    encoding: 'utf-8'
-  });
-
-  if (result.status !== 0) {
-    console.error(`[Retarget] Blender failed with exit code: ${result.status}`);
-    process.exit(1);
-  }
-
-  console.log(`[Retarget] Clips retargeted successfully to: ${outputPath}`);
+  runBlender(SCRIPT, blenderArgs, { label: 'Retarget' });
+  console.log(`[Retarget] Candidate clips written to: ${outputPath}`);
 }

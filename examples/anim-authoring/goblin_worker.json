@@ -1,0 +1,123 @@
+{
+  "unit": "goblin_worker",
+  "rig": "output/anim-authoring/goblin_worker/rig-v1/character.glb",
+  "candidates": [
+    "output/anim-authoring/goblin_worker/candidates-v2/candidates.glb",
+    "output/anim-authoring/goblin_worker/candidates-v3/candidates.glb"
+  ],
+  "mixamoManifest": "mocap/goblin_worker/manifest.json",
+  "heldTool": {
+    "attack": "club",
+    "gather": "axe",
+    "build": "hammer"
+  },
+  "clips": {
+    "idle": {
+      "source": "idle_standing_around_bored_idle",
+      "loop": true
+    },
+    "idle_2": {
+      "source": "idle_zombie_scratching_idle",
+      "loop": true
+    },
+    "idle_3": {
+      "source": "idle_look_around_nervously",
+      "loop": true
+    },
+    "walk": {
+      "source": "walk_male_orc_walk_forward",
+      "loop": true,
+      "note": "user: needs a regular walk, not a sneak"
+    },
+    "attack": {
+      "source": "attack_downward_attack_with_axe",
+      "range": [
+        3,
+        48
+      ],
+      "speed": 1.25,
+      "yawKeep": 0.3,
+      "markers": {
+        "windup": 15,
+        "hit": 26
+      },
+      "note": "unit attackSpeed 0.8/s -> 1.25 s cycle; clip trimmed to one swing and sped to 1.2 s"
+    },
+    "gather": {
+      "source": "attack_right_to_left_attack_with_ax",
+      "speed": 1.2,
+      "yawKeep": 0.3,
+      "loop": true,
+      "markers": {
+        "hit": 30
+      }
+    },
+    "build": {
+      "source": "attack_downward_attack_with_axe",
+      "range": [
+        3,
+        48
+      ],
+      "speed": 1.1,
+      "yawKeep": 0.2,
+      "loop": true,
+      "markers": {
+        "hit": 26
+      }
+    },
+    "sleep": {
+      "source": "sleep_sleeping_deeply",
+      "loop": true,
+      "groundClamp": true
+    },
+    "sitting": {
+      "source": "sit_sitting_on_the_floor",
+      "loop": true,
+      "groundClamp": true
+    },
+    "run": {
+      "source": "run_running_with_intention",
+      "loop": true,
+      "note": "user pick"
+    },
+    "jump": {
+      "source": "jump_jump_up",
+      "groundClamp": true,
+      "note": "user pick; in place, straight up"
+    },
+    "death": {
+      "source": "death_dying_falling_forward",
+      "groundClamp": true
+    },
+    "death_2": {
+      "source": "death_death_falling_backwards",
+      "groundClamp": true
+    },
+    "death_3": {
+      "source": "death_death_from_standing_idle",
+      "groundClamp": true
+    },
+    "death_4": {
+      "source": "death_zombie_getting_hit_and_falli",
+      "groundClamp": true
+    },
+    "death_5": {
+      "source": "death_dying_from_a_crouched_positi",
+      "groundClamp": true
+    },
+    "death_6": {
+      "source": "death_death_hit_from_the_back_fall",
+      "groundClamp": true
+    },
+    "death_7": {
+      "source": "death_dying_flying_backward",
+      "groundClamp": true
+    },
+    "death_8": {
+      "source": "death_death_falling_to_the_right",
+      "groundClamp": true
+    }
+  },
+  "markerFps": 30,
+  "notes": "death, death_2..death_8: the renderer picks one at random per death (user: all good, randomise)"
+}
