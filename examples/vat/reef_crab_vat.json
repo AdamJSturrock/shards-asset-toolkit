@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "unitId": "neutral_critter_crab",
+  "vertexCount": 7698,
+  "textureWidth": 7698,
+  "textureHeight": 1,
+  "fps": 30,
+  "maxFrames": 256,
+  "framesDownsampled": false,
+  "clips": {
+    "rest": {
+      "startFrame": 0,
+      "frameCount": 1,
+      "loop": true,
+      "durationSec": 0.033333,
+      "sampleRateFps": 30,
+      "sourceFrameCount": 1,
+      "sourceFrameStart": 1,
+      "sourceFrameEnd": 1,
+      "downsampled": false,
+      "sourceAction": null
+    }
+  },
+  "clipWarnings": [],
+  "fallbackAliasSlots": [],
+  "unmatchedActions": [],
+  "positionBounds": {
+    "min": [
+      -1.0288097858428955,
+      -0.734405517578125,
+      -0.911339521408081
+    ],
+    "max": [
+      1.0280170440673828,
+      0.8502121567726135,
+      0.9082959890365601
+    ],
+    "center": [
+      -0.00039637088775634766,
+      0.05790331959724426,
+      -0.001521766185760498
+    ],
+    "scale": 1.0284134149551392
+  },
+  "encoding": {
+    "format": "KTX2_RGBA16_UNORM_ZSTD",
+    "channels": "RGB = position.xyz (normalized), A = 1.0",
+    "rangeMapping": "(value / 65535) * 2 - 1, then * positionBounds.scale + positionBounds.center",
+    "lossless": true,
+    "precisionBits": 16,
+    "note": "Recovered legacy 8-bit samples into valid RGBA16_UNORM storage on 2026-09-07. Full 16-bit precision requires a new bake with the corrected encoder.",
+    "outputs": {
+      "pos": "neutral_critter_crab_vat_pos.ktx2",
+      "norm": "neutral_critter_crab_vat_norm.ktx2"
+    },
+    "effectivePrecisionBits": 8
+  },
+  "axisHint": "blender_z_up: positions and normals are baked in Blender's native +Z-up object space (v.co reads). Shards of Stone's three.js scene is also +Z-up, so the runtime shader (src/game/rendering/shaders/vatVertex.glsl) does NOT apply an xzy swap. The static mesh GLB ships Y-up (export_yup=True) but the shader does not sample the geometry's `position` attribute, only uv2.x, so the mesh frame is irrelevant. If the receiving scene ever moves to Y-up, uncomment the `samplePos = samplePos.xzy;` line in vatVertex.glsl.",
+  "availableActions": [],
+  "source": "character.glb",
+  "sourceAnimations": "animations.glb",
+  "targetVerts": 4000,
+  "bakedBy": "tools/blender_vat_bake.py v2",
+  "runtimeEligible": false
+}

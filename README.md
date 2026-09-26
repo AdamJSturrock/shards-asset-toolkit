@@ -4,7 +4,50 @@ The official open-source generative 3D asset pipeline for [Shards of Stone](http
 
 This toolkit automates the entire journey from a text prompt or 2D concept into a fully animated, browser-optimised 3D unit. It produces production-ready `.glb` models and Vertex Animation Texture (VAT) bundles that run at 60 fps in web browsers and Three.js scenes with zero manual 3D modeling required.
 
+## Video & Visual Showcase
+
+### In-engine shoreline result (60 fps web engine)
+
+![Shellback Cutthroat in-engine beauty loop](docs/images/showcase_shoreline_loop.gif)
+
+*The Shellback Cutthroat crab pirate (`creep_shellback_cutthroat`) running live in the Three.js web engine on a forest beach shoreline with dynamic water reflections, its creep spawner (`creep_shell_grotto`), and treasure chest props.*
+
+> 🎥 **Video:** You can also inspect the full high-fidelity video directly in [`docs/videos/showcase_shellback_shoreline.mp4`](docs/videos/showcase_shellback_shoreline.mp4).
+
+### The end-to-end automated pipeline
+
 ![Automated 3D unit pipeline conveyor belt: 2D concept to 3D mesh to animated warrior](docs/images/pipeline_conveyor_banner.png)
+
+---
+
+## Bundled example assets (test offline without API keys)
+
+This repository includes pre-generated 2D concepts, raw 3D meshes, rigged animated models, and baked VAT bundles in [`examples/`](examples/) so you can test every tool immediately without needing API keys or cloud credits:
+
+| Asset type | File path | Description |
+|---|---|---|
+| **Raw Meshy 3D mesh** | [`examples/models/cutthroat_raw_meshy.glb`](examples/models/cutthroat_raw_meshy.glb) | Unrigged 30,561-polygon continuous organic sculpt straight from Meshy |
+| **Rigged & animated 3D model** | [`examples/models/cutthroat_rigged_animated.glb`](examples/models/cutthroat_rigged_animated.glb) | Articulated 24-joint model with 5 embedded combat animations |
+| **2D humanoid concept** | [`examples/concepts/shellback_cutthroat_concept.png`](examples/concepts/shellback_cutthroat_concept.png) | Clean studio-isolated concept of the crab pirate |
+| **2D critter concept** | [`examples/concepts/reef_crab_concept.png`](examples/concepts/reef_crab_concept.png) | Clean concept of the multi-legged reef crab |
+| **Baked VAT static mesh** | [`examples/vat/reef_crab_mesh.glb`](examples/vat/reef_crab_mesh.glb) | Decimated 4,000-vert geometry with UV2 vertex lookups |
+| **Baked VAT position texture** | [`examples/vat/reef_crab_vat_pos.ktx2`](examples/vat/reef_crab_vat_pos.ktx2) | 16-bit GPU texture storing per-frame vertex offsets |
+| **Baked VAT normal texture** | [`examples/vat/reef_crab_vat_norm.ktx2`](examples/vat/reef_crab_vat_norm.ktx2) | Dynamic lighting normal vectors |
+| **Baked VAT animation metadata** | [`examples/vat/reef_crab_vat.json`](examples/vat/reef_crab_vat.json) | Animation clip frames, durations, and playback rates |
+
+### Quick offline test commands
+
+```bash
+# Test the browser optimizer on the bundled rigged GLB
+node bin/shards-asset.mjs optimize \
+  --input examples/models/cutthroat_rigged_animated.glb \
+  --output ./output/optimized_cutthroat.glb
+
+# Test VAT baking on the bundled model
+node bin/shards-asset.mjs vat \
+  --input examples/models/cutthroat_rigged_animated.glb \
+  --output ./output/vat/
+```
 
 ---
 
@@ -101,122 +144,88 @@ Because the pipeline automates each step and logs resource consumption, the cost
 | **Web optimization & VAT** | gltf-transform + Blender | Local headless compute (~45 seconds) | $0.00 (Free) |
 | **Total per finished unit** | | **All stages combined** | **~$0.55 to $1.00** |
 
-### Comparison to traditional game development
-
-- **Freelance contractor:** $300 to $1,500 per unit, 2 to 3 weeks delivery time.
-- **This pipeline:** Under $1.00 per unit, 10 to 15 minutes end to end.
-- **Budget for a full custom faction (12 units + 8 buildings):** Roughly $15 to $20 in API credits.
-
 ---
 
-## How to use: step-by-step guide
+## Step-by-step visual pipeline
 
-You can run individual stages or execute the full end-to-end pipeline with a configuration file.
-
-### 1. Generating concept art
+### Stage 1: Concept generation and prompt isolation
 
 Prompt Gemini for an isometric three-quarter orthographic concept with transparent or white background:
 
+| Shellback Cutthroat (Humanoid) | Reef Crab (Multi-legged Critter) |
+|---|---|
+| ![Shellback Cutthroat Concept](docs/images/01_concept_shellback_cutthroat.png) | ![Reef Crab Concept](docs/images/01_concept_reef_crab.png) |
+
 ```bash
 node bin/shards-asset.mjs concept \
-  --prompt "A giant armored reef crab unit with coral on its carapace, heavy snapping claws, 8 walking legs, fantasy RTS style" \
-  --output ./output/concepts/reef_crab.png \
+  --prompt "An upright crab-folk buccaneer pirate, barnacled shell, tricorn hat, huge right claw, cutlass in left claw" \
+  --output ./output/concepts/shellback_cutthroat.png \
   --strip-effects
 ```
 
-**Key rule:** The `--strip-effects` flag removes floating sparks, smoke, dripping liquids, web strands, and ground pedestals. 3D generators turn atmospheric effects and ground terrain into solid geometry lumps that ruin the character mesh.
+**Key prompt rule:** Strip all particle systems, weapon smoke wisps, floating embers, and ground contact shadows. 3D generators have no concept of transparency and will sculpt smoke or ground shadows into solid rock lumps that ruin the character mesh.
 
-### 2. Generating the 3D mesh
+### Stage 2: 3D mesh synthesis with Meshy
 
 Send the cleaned concept to Meshy to generate a 30,000-polygon textured GLB:
 
+| Shellback Cutthroat 3D Mesh | Reef Crab 3D Mesh |
+|---|---|
+| ![Shellback Cutthroat 3D Mesh](docs/images/02_meshy_mesh_shellback_cutthroat.png) | ![Reef Crab 3D Mesh](docs/images/02_meshy_mesh_reef_crab.png) |
+
 ```bash
 node bin/shards-asset.mjs mesh \
-  --input ./output/concepts/reef_crab.png \
-  --output ./output/meshes/reef_crab.glb \
+  --input ./output/concepts/shellback_cutthroat.png \
+  --output ./output/meshes/shellback_cutthroat.glb \
   --polycount 30000 \
   --texture-size 2048
 ```
 
-The script polls the Meshy task status until completion and downloads the resulting GLB and preview thumbnail.
+### Stage 3: Rigging and topological component isolation
 
-### 3. Rigging & animating
+Fit anatomical skeletons in headless Blender and isolate rigid components (swords, hats, carapaces) to prevent skinning distortion:
 
-#### Option A: Non-humanoids (Crabs, Spiders, Scorpions, Quadrupeds, Drakes)
-
-Non-humanoids use our procedural rigging engine in headless Blender:
+| Humanoid 24-Joint Rig & Weapon Isolation | Arthropod 10-Leg Radial Bone Hierarchy |
+|---|---|
+| ![Blender Rig Shellback Cutthroat](docs/images/03_blender_rig_shellback_cutthroat.png) | ![Blender Weights Reef Crab](docs/images/03_blender_weights_reef_crab.png) |
 
 ```bash
+# Rigging asymmetric humanoid with weapon and hat locking
+node bin/shards-asset.mjs rig \
+  --mesh ./output/meshes/shellback_cutthroat.glb \
+  --type humanoid \
+  --weapon-bone LeftHand \
+  --rigid-head true \
+  --out ./output/rigged/shellback_cutthroat.glb
+
+# Rigging multi-legged critter with procedural walking gait
 node bin/shards-asset.mjs rig-critter \
   --input ./output/meshes/reef_crab.glb \
   --template crustacean \
   --output ./output/rigged/reef_crab.glb
 ```
 
-Available templates:
-- `crustacean`: Carapace, 8 walking legs, 2 claws with snapping pincers, lateral scuttling gait.
-- `arachnid`: Cephalothorax, abdomen, 8 legs (4 segments each), fangs, alternating tetrapod gait.
-- `scorpion`: 8 walking legs, 2 pedipalps with pincers, 5-joint segmented stinging tail with strike attack.
-- `sprawl`: Low-slung quadruped with lateral spine undulation and tail sway (salamanders, lizards).
-- `drake`: Flying wing armature with hovering flight cycle, banked turn loop, and breath attack.
+### Stage 4: Animation suite gallery
 
-**Topological component isolation:** The script executes `fit_arthropod.py` to identify landmark seeds and trace geodesic edge distances. Vertices are tagged into isolated component masks so bone weights cannot bleed into neighbouring legs.
+The pipeline generates and retargets complete combat animation suites:
 
-#### Option B: Humanoids (Goblins, Dwarves, Humans, Ogres)
+#### Humanoid Pirate Animation Cycles (`creep_shellback_cutthroat`)
 
-For humanoids, download desired FBX animation clips from Mixamo (e.g. `idle.fbx`, `walk.fbx`, `attack.fbx`, `death.fbx`), then retarget them:
+| Idle (1.83s) | Walk (1.43s) | Cutlass Slash (1.00s) | Claw Strike (0.97s) | Death (3.17s) |
+|:---:|:---:|:---:|:---:|:---:|
+| ![Cutthroat Idle](docs/images/cutthroat_anim_idle.gif) | ![Cutthroat Walk](docs/images/cutthroat_anim_walk.gif) | ![Cutthroat Slash](docs/images/cutthroat_anim_attack.gif) | ![Cutthroat Claw](docs/images/cutthroat_anim_attack2.gif) | ![Cutthroat Death](docs/images/cutthroat_anim_death.gif) |
 
-```bash
-node bin/shards-asset.mjs retarget-mixamo \
-  --target ./output/meshes/goblin_peon.glb \
-  --clip idle=./mocap/goblin_peon/idle.fbx \
-  --clip walk=./mocap/goblin_peon/walk.fbx \
-  --clip attack=./mocap/goblin_peon/slash.fbx \
-  --clip death=./mocap/goblin_peon/death.fbx \
-  --leg-align 0.5 \
-  --loop idle \
-  --loop walk \
-  --out ./output/rigged/goblin_peon.glb
-```
+#### Non-Humanoid Procedural Gaits (Arachnids & Decapods)
 
-- `--leg-align 0.5`: Preserves the character's unique anatomy (e.g. a goblin's bowed knees or an ogre's wide stance) instead of forcing rigid Mixamo posture.
-- `--loop <name>`: Automatically cancels horizontal root motion drift so walk and run cycles stay centered at the origin.
+| Reef Crab (10-Leg Scuttle) | Broodspider (8-Leg Radial Crawl) |
+|:---:|:---:|
+| ![Reef Crab Animation](docs/images/crab_anim.gif) | ![Broodspider Animation](docs/images/spider_anim.gif) |
 
-### 4. Browser optimization pass
+### Stage 5: In-engine result and creep spawner
 
-A raw 25 MB GLB will crash browser tabs when multiple armies clash. Run the optimization pass to produce a compact, production-ready asset:
+Here is the final unit rendered in the Three.js web engine with water reflections, its creep spawner, and props:
 
-```bash
-node bin/shards-asset.mjs optimize \
-  --input ./output/rigged/reef_crab.glb \
-  --texture-max 1024 \
-  --codec mixed \
-  --output ./output/optimized/reef_crab.glb
-```
-
-This applies:
-- Texture resizing to 1024px.
-- KTX2 Basis Universal compression: UASTC for normal and metallic-roughness maps; ETC1S for diffuse colour maps.
-- Geometry and keyframe track compression via `meshopt`.
-
-### 5. Baking Vertex Animation Textures (VAT) for crowd rendering
-
-For units that appear in large armies, skeletal skinning on the CPU is a major performance bottleneck. Baking Vertex Animation Textures allows Three.js to animate hundreds of units on the GPU in a single instanced draw call:
-
-```bash
-node bin/shards-asset.mjs bake-vat \
-  --input ./output/rigged/reef_crab.glb \
-  --output-dir ./output/baked/ \
-  --target-verts 4000
-```
-
-Outputs generated:
-- `<unit>_mesh.glb`: Static, unrigged decimated mesh (~4,000 vertices) with UV2 vertex lookups.
-- `<unit>_vat_pos.ktx2`: 16-bit RGBA texture containing per-frame vertex coordinate deltas.
-- `<unit>_vat_norm.ktx2`: Normal texture preserving dynamic lighting during animation.
-- `<unit>_vat.json`: Sidecar metadata defining clip frame ranges, authored durations, and playback speeds.
-
----
+![In-engine shoreline beauty render](docs/images/showcase_shellback_shoreline.png)
 
 ## Full pipeline execution via config file
 
