@@ -271,6 +271,40 @@ Instead of passing a skeletal hierarchy to the GPU:
 
 ---
 
+## Advanced frontier: Reference-to-Video with Seedance for complex motion & VFX
+
+While the core automated toolkit uses procedural gait equations and Mixamo retargeting for standard locomotion and attacks, complex creature behaviours often demand bespoke choreography and integrated visual effects that stock motion libraries lack.
+
+To push beyond stock mocap, we are testing an experimental workflow combining Blender 3D proxy blocking with ByteDance's **Seedance** video diffusion model:
+
+```
+[ 3D Proxy / Viewport Previs ] ──► [ Playblast Reference Video ]
+                                               │
+                                               ▼
+                                 [ Seedance R2V Diffusion ]
+                                    (Guided by 3D timing)
+                                               │
+                         ┌─────────────────────┴─────────────────────┐
+                         ▼                                           ▼
+            [ Motion Delta Tracking ]                    [ Synchronised VFX ]
+         (Pose estimation to keyframes)               (Impact sprites & shaders)
+                         │                                           │
+                         ▼                                           ▼
+            [ Blender Armature Action ]                  [ Engine Particle / Mesh ]
+```
+
+### How the Seedance workflow operates
+
+1. **3D Previs & Proxy Blocking:** An artist or AI agent animates the model or simple proxy geometry inside Blender with rough keyframes. This sets the camera angle, timing windows, character trajectory, and physical limits, solving the typical "drifting camera" and proportion warping common in text-only video generation.
+2. **Playblast Reference Video:** Blender exports a lightweight viewport render (clay or shaded) of the action.
+3. **Reference-to-Video (R2V) Diffusion:** The playblast is fed into Seedance alongside detailed character and environmental prompt instructions. Guided by the 3D playblast, Seedance diffuses fluid anatomical weight shifts, complex multi-limb coordination, momentum recoils, and atmospheric interactions.
+4. **Motion Retargeting:** Pose tracking extracts joint rotations from the generated video frames, mapping dynamic weight transfers and secondary physics back onto the Blender armature.
+5. **VFX & Impact Extraction:** Character-aligned visual effects (such as water splashes, magical halos, and ground fracture shockwaves) are extracted as alpha-masked sprite sheets or billboard particles synchronised with the combat hit window.
+
+> **Note:** This is an advanced frontier workflow currently in active experimental R&D. It is not yet bundled as a default one-click CLI command, but represents our forward roadmap for authoring high-fidelity, organic fantasy combat animations.
+
+---
+
 ## Integrating custom units into Shards of Stone
 
 Once your model is generated, dropping it into a custom map or mod is straightforward:
