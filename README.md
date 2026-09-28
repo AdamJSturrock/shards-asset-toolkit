@@ -10,11 +10,13 @@ This toolkit automates the entire journey from a text prompt or 2D concept into 
 
 ![Shellback Cutthroat in-engine beauty loop](docs/images/showcase_shoreline_loop.gif)
 
-*The Shellback Cutthroat crab pirate (`creep_shellback_cutthroat`) running live in the Three.js web engine on a forest beach shoreline with dynamic water reflections, its creep spawner (`creep_shell_grotto`), and treasure chest props.*
+*The Shellback Cutthroat crab pirate (`creep_shellback_cutthroat`) running live in the Three.js web engine on a forest beach shoreline with dynamic water reflections, its 3x3 creep spawner (`creep_shell_grotto`), and roaming squad units.*
 
-![Shellback Cutthroat in-engine 1080p beauty still](docs/images/showcase_shellback_shoreline.png)
-
-> 🎥 **Video:** You can also inspect the full high-fidelity 60 fps video directly in [`docs/videos/showcase_shellback_shoreline.mp4`](docs/videos/showcase_shellback_shoreline.mp4).
+| Creature | Still Render | 60 fps Video | In-Engine Behavior & Spawner |
+|---|---|---|---|
+| **Shellback Cutthroat** | [1080p Still](docs/images/showcase_shellback_shoreline.png) | [🎥 10s MP4](docs/videos/showcase_shellback_shoreline.mp4) | 4 units wandering & idling, shallows wading, 3x3 Shell Grotto |
+| **Reef Crab** | [1080p Still](docs/images/showcase_reef_crab.png) | [🎥 10s MP4](docs/videos/showcase_reef_crab.mp4) | 5 crabs scuttling and foraging in crystal water, 3x3 Shell Grotto |
+| **Broodspider** | [1080p Still](docs/images/showcase_broodspider.png) | [🎥 10s MP4](docs/videos/showcase_broodspider.mp4) | 4 arachnids patrolling forest terrain and rearing idle, 3x3 Spider Lair |
 
 ### The end-to-end automated pipeline
 
@@ -233,9 +235,13 @@ The pipeline generates and retargets complete combat animation suites:
 
 ### Stage 5: In-engine result and creep spawner
 
-Here is the final unit rendered in the Three.js web engine with water reflections, its creep spawner, and props:
+Here are the final units rendered live in the Three.js web engine with Water3DPlus shaders, 3x3 creep spawners, and roaming squad behaviors:
 
-![In-engine shoreline beauty render](docs/images/showcase_shellback_shoreline.png)
+| Shellback Cutthroat (Asymmetric Pirate) | Reef Crab (10-Leg Decapod) | Broodspider (8-Leg Arachnid) |
+|:---:|:---:|:---:|
+| [![Shellback Cutthroat](docs/images/showcase_shellback_shoreline.png)](docs/videos/showcase_shellback_shoreline.mp4) | [![Reef Crab](docs/images/showcase_reef_crab.png)](docs/videos/showcase_reef_crab.mp4) | [![Broodspider](docs/images/showcase_broodspider.png)](docs/videos/showcase_broodspider.mp4) |
+| [🎥 View 10s 60fps MP4](docs/videos/showcase_shellback_shoreline.mp4) | [🎥 View 10s 60fps MP4](docs/videos/showcase_reef_crab.mp4) | [🎥 View 10s 60fps MP4](docs/videos/showcase_broodspider.mp4) |
+| 3x3 Shell Grotto, squad wandering & shallows wading | 3x3 Shell Grotto, foraging in crystal water | 3x3 Spider Lair, brood patrol & rearing idle |
 
 ## Full pipeline execution via config file
 
